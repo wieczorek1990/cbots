@@ -1,0 +1,5 @@
+{
+  "port": $port,
+  "verify_token": "$verify_token_for_webhook",
+  "page_access_token": "$facebook_page_access_token"
+}
