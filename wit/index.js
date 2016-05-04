@@ -6,7 +6,7 @@
 // * a Messenger Platform setup (https://developers.facebook.com/docs/messenger-platform/quickstart)
 // You need to `npm install` the following dependencies: body-parser, express, request.
 //
-// 1. npm install body-parser express request 
+// 1. npm install body-parser express request
 // 2. Download and install ngrok from https://ngrok.com/download
 // 3. ./ngrok http 8445
 // 4. WIT_TOKEN=your_access_token FB_PAGE_ID=your_page_id FB_PAGE_TOKEN=your_page_token FB_VERIFY_TOKEN=verify_token node examples/messenger.js
@@ -45,33 +45,37 @@ const fbReq = request.defaults({
   uri: 'https://graph.facebook.com/me/messages',
   method: 'POST',
   json: true,
-  qs: { access_token: FB_PAGE_TOKEN },
-  headers: {'Content-Type': 'application/json'},
+  qs: {
+    access_token: FB_PAGE_TOKEN
+  },
+  headers: {
+    'Content-Type': 'application/json'
+  },
 });
 
 const fbMessage = (recipientId, msg, cb) => {
   var message;
   if (!msg.isImage) {
     message = {
-      text: msg.text,
+      text: msg.text
     };
   } else {
     message = {
       attachment: {
         type: 'image',
         payload: {
-          url: msg.text,
-        },
-      },
+          url: msg.text
+        }
+      }
     };
   }
   const opts = {
     form: {
       recipient: {
-        id: recipientId,
+        id: recipientId
       },
       message: message
-    },
+    }
   };
   fbReq(opts, (err, resp, data) => {
     if (cb) {
@@ -84,8 +88,7 @@ const firstEntityValue = (entities, entity) => {
   const val = entities && entities[entity] &&
     Array.isArray(entities[entity]) &&
     entities[entity].length > 0 &&
-    entities[entity][0].value
-  ;
+    entities[entity][0].value;
   if (!val) {
     return null;
   }
@@ -104,8 +107,7 @@ const getFirstMessagingEntry = (body) => {
     body.entry[0].messaging &&
     Array.isArray(body.entry[0].messaging) &&
     body.entry[0].messaging.length > 0 &&
-    body.entry[0].messaging[0]
-  ;
+    body.entry[0].messaging[0];
   return val || null;
 };
 
@@ -128,7 +130,10 @@ const findOrCreateSession = (fbid) => {
   if (!sessionId) {
     // No session found for user fbid, let's create a new one
     sessionId = new Date().toISOString();
-    sessions[sessionId] = {fbid: fbid, context: {}};
+    sessions[sessionId] = {
+      fbid: fbid,
+      context: {}
+    };
   }
   return sessionId;
 };
@@ -232,8 +237,10 @@ app.post('/webhook', (req, res) => {
 
       // Let's reply with an automatic message
       fbMessage(
-        sender,
-        {isImage: false, text: 'Sorry I can only process text messages for now.'}
+        sender, {
+          isImage: false,
+          text: 'Sorry I can only process text messages for now.'
+        }
       );
     } else if (msg) {
       // We received a text message
@@ -242,7 +249,7 @@ app.post('/webhook', (req, res) => {
       // This will run all actions until our bot has nothing left to do
       wit.runActions(
         sessionId, // the user's current session
-        msg, // the user's message 
+        msg, // the user's message
         sessions[sessionId].context, // the user's current session state
         (error, context) => {
           if (error) {
@@ -268,4 +275,3 @@ app.post('/webhook', (req, res) => {
   }
   res.sendStatus(200);
 });
-
