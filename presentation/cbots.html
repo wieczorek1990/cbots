@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>Conversational Bots for Facebook Messenger</title>
@@ -6,20 +6,40 @@
     <style>
       @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
       @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
-      @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+      @import url(https://fonts.googleapis.com/css?family=Source+Code+Pro:400,700,400italic);
 
+      a {
+        color: inherit;
+      }
       body {
+        color: #657b83;
         font-family: 'Droid Serif';
       }
       h1, h2, h3 {
+        color: #586e75;
         font-family: 'Yanone Kaffeesatz';
         font-weight: normal;
       }
-      .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+      .remark-code, .remark-inline-code {
+        font-family: 'Source Code Pro';
+      }
+      .remark-container {
+        background-color: #eee8d5;
+      }
+      .remark-slide-content {
+        background-color: #fdf6e3;
+      }
     </style>
   </head>
   <body>
     <script src="https://gnab.github.io/remark/downloads/remark-latest.min.js"></script>
-    <script>var slideshow = remark.create({sourceUrl: 'cbots.md'});</script>
+    <script>
+      var slideshow = remark.create({
+        ratio: '16:9',
+        sourceUrl: 'cbots.md',
+        highlightLanguage: 'javascript',
+        highlightStyle: 'solarized-light'
+      });
+    </script>
   </body>
 </html>

@@ -1,0 +1,3 @@
+#!/usr/bin/fish
+
+env WIT_TOKEN=... FB_PAGE_ID=... FB_PAGE_TOKEN=... FB_VERIFY_TOKEN=... node index.js

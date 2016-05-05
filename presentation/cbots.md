@@ -14,6 +14,8 @@ class: center, middle
 5. api.ai
 6. Microsoft Bot Framework
 7. Other solutions
+8. What can I possibly write with this?
+9. Summary
 
 ---
 
@@ -31,26 +33,25 @@ New times:
 
 # [Facebook Messenger Platform](https://developers.facebook.com/docs/messenger-platform)
 
-* Facebook Page (Send message) & Application (Messenger, Webhooks).
+* Facebook Page (Send message) & Application (Messenger, Webhooks)
 
-* `express`:
-
-  Hooks for Messenger API.
+* `express` — Hooks for Messenger API
 
   `GET /webhook` — challene-response authentication
 
   `POST /webhook` — new message hook
+    * read the message
+    * send the message to the bot API
+    * return the formatted bot API response to sender
 
-* `request`:
+* `request` — Post request to Messenger API
 
-  Post request to Messenger API.
-
-  ```json
+```
 {
   "recipient": "...",
   "message": {...}
 }
-  ```
+```
 
 ---
 
@@ -87,6 +88,27 @@ How?
 * Actions — custom (conditional) actions (developer implementation) and responses
 * Understanding — entities values and search strategies
 * Logs — message, context, actions
+
+---
+
+background-image: url(images/wit-inbox.png)
+class: center
+
+---
+
+# Entities
+
+* Trait — derived from whole sentence
+  * Intent
+  * Sentiment
+  * Politeness
+* Free Text — not predefined message substring
+  *	Message Body
+  * Contact Name
+* Keywords — value from predefined list
+  * Country
+  * Burger
+  * Room
 
 ---
 
@@ -142,7 +164,7 @@ class: center
 
 # Server custom code (1)
 
-```js
+```
 
 var CAT_COUNTER = 0;
 
@@ -185,14 +207,6 @@ const fbMessage = (recipientId, msg, cb) => {
       }
     };
   }
-  const opts = {
-    form: {
-      recipient: {
-        id: recipientId
-      },
-      message: message
-    }
-  };
   ...
 }
 ```
@@ -215,7 +229,139 @@ How?
 
 ---
 
+background-image: url(images/api-intents-1.png)
+class: center
+
+# Intents (1)
+
+---
+
+background-image: url(images/api-intents-2.png)
+class: center
+
+# Intents (2)
+
+---
+
+background-image: url(images/api-intents-3.png)
+class: center
+
+# Intents (3)
+
+---
+
+background-image: url(images/api-intents-4.png)
+class: center
+
+# Intents (4)
+
+---
+
+background-image: url(images/api-intents-5.png)
+class: center
+
+# Intents (5)
+
+---
+
+background-image: url(images/api-entities.png)
+class: center
+
+# Entities
+
+---
+
+background-image: url(images/api-logs.png)
+class: center
+
+# Logs
+
+---
+
+background-image: url(images/api-domains.png)
+class: center
+
+# Domains
+
+---
+
+# Custom server code (1)
+
+```
+let CAT_COUNTER = 0;
+const actions = {
+  counter() {
+    CAT_COUNTER += 1;
+    console.log(CAT_COUNTER + ' cats served');
+  }
+}
+```
+
+```
+function processEvent(event) {
+  ...
+        let action = response.result.action;
+
+        if (action in actions) {
+          actions[action]();
+        }
+  ...
+}
+```
+
+---
+
+# Custom server code (2)
+
+```
+let isImage = response.result.parameters.isImage === 'true';
+if (!isImage) {
+  // facebook API limit for text length is 320,
+  // so we split message if needed
+  var splittedText = splitResponse(responseText);
+
+  for (var i = 0; i < splittedText.length; i++) {
+    sendFBMessage(sender, {
+      text: splittedText[i]
+    });
+  }
+} else {
+  let message = {
+    attachment: {
+      type: 'image',
+      payload: {
+        url: responseText
+      }
+    }
+  };
+  sendFBMessage(sender, message);
+}
+```
+
+---
+
 # [Microsoft Bot Framework](https://dev.botframework.com/)
+
+---
+
+# What can I possibly write with this?
+
+* Cat bot? :-)
+* Booking bot (tickets, pizza delivery, reservation, etc.)
+* Company information bot ("What would you like to know about Apptension?")
+* Joke bot
+* Comfort bot
+* Help desk bot
+* Weather bot
+* Monitoring bot
+
+---
+
+# Summary
+
+* Different from "free" bots
+* Similar & immature solutions
+* "Story" driven
 
 ---
 

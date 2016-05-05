@@ -18,6 +18,14 @@ const apiAiService = apiai(APIAI_ACCESS_TOKEN, {
 });
 const sessionIds = new Map();
 
+let CAT_COUNTER = 0;
+const actions = {
+  counter() {
+    CAT_COUNTER += 1;
+    console.log(CAT_COUNTER + ' cats served');
+  }
+}
+
 function processEvent(event) {
   var sender = event.sender.id;
 
@@ -41,6 +49,10 @@ function processEvent(event) {
         let responseData = response.result.fulfillment.data;
         let action = response.result.action;
 
+        if (action in actions) {
+          actions[action]();
+        }
+
         if (isDefined(responseData) && isDefined(responseData.facebook)) {
           try {
             console.log('Response as formatted message');
@@ -53,8 +65,7 @@ function processEvent(event) {
         } else if (isDefined(responseText)) {
           console.log('Response as text message');
 
-          let isImage = isDefined(response.result.parameters) &&
-            response.result.parameters.isImage === 'true';
+          let isImage = response.result.parameters.isImage === 'true';
           if (!isImage) {
             // facebook API limit for text length is 320,
             // so we split message if needed

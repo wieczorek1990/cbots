@@ -1,0 +1,7 @@
+#!/usr/bin/env fish
+
+env APIAI_ACCESS_TOKEN="..." \
+  FB_PAGE_ACCESS_TOKEN="..." \
+  FB_VERIFY_TOKEN="..." \
+  APIAI_LANG="en" \
+  node index.js
