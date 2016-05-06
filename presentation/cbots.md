@@ -13,9 +13,7 @@ class: center, middle
 4. wit.ai
 5. api.ai
 6. Microsoft Bot Framework
-7. Other solutions
-8. What topics can I possibly touch with this?
-9. Summary
+7. Summary
 
 ---
 
@@ -102,13 +100,6 @@ How?
 * Actions — actions in code
 * Understanding — entity values and search strategies
 * Logs — message, context, actions
-
----
-
-background-image: url(images/wit-inbox.png)
-class: center
-
-# Inbox
 
 ---
 
@@ -331,8 +322,6 @@ function processEvent(event) {
 ```js
 let isImage = response.result.parameters.isImage === 'true';
 if (!isImage) {
-  // facebook API limit for text length is 320,
-  // so we split message if needed
   var splittedText = splitResponse(responseText);
 
   for (var i = 0; i < splittedText.length; i++) {
@@ -374,7 +363,7 @@ How?
 background-image: url(images/microsoft-botframework.png)
 class: center
 
-# Botframework
+# Bot framework
 
 ---
 
@@ -484,7 +473,7 @@ dialog.on('Category', function(session, args) {
 
 ---
 
-# Summary
+# Good & bad parts
 
 * wit.ai
   * free
@@ -512,7 +501,7 @@ dialog.on('Category', function(session, args) {
 * [Pandorabots](http://www.pandorabots.com/)
 * [Pingup](http://pingup.com/developers/)
 * [OneBotAPI](http://www.onebotapi.com/)
-* and others not high in Google Search
+* and others not high in Google Search results
 
 ---
 
