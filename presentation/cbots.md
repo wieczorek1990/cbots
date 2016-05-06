@@ -1,8 +1,13 @@
 class: center, middle
 
 # Conversational Bots
+
 ### for Facebook Messenger
+
 .author[by Łukasz Wieczorek]
+
+.links[[sources](https://github.com/wieczorek1990/cbots) | [presentation online](https://wieczorek1990.github.io/cbots/presentation)]
+
 ---
 
 # Agenda
@@ -505,18 +510,9 @@ dialog.on('Category', function(session, args) {
 
 ---
 
-class: center, middle
-
-# Source code
-
-[GitHub repository](https://github.com/wieczorek1990/cbots)
-
-[Online presentation](http://wieczorek1990.github.io/cbots/presentation)
-
----
-
 background-image: url(images/cat.png)
 class: center, bottom
 
 # Thanks
+
 ### Questions please
