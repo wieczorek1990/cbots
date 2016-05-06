@@ -108,6 +108,8 @@ How?
 background-image: url(images/wit-inbox.png)
 class: center
 
+# Inbox
+
 ---
 
 # Entities
