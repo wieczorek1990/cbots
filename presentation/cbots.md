@@ -2,7 +2,7 @@ class: center, middle
 
 # Conversational Bots
 ### for Facebook Messenger
-
+.author[by Łukasz Wieczorek]
 ---
 
 # Agenda
@@ -477,6 +477,7 @@ dialog.on('Category', function(session, args) {
 * Weather
 * Monitoring
 * Learning
+* Police reports
 * etc.
 
 ---
@@ -510,11 +511,21 @@ dialog.on('Category', function(session, args) {
 * [Pingup](http://pingup.com/developers/)
 * [OneBotAPI](http://www.onebotapi.com/)
 * and others not high in Google Search
+
+---
+
+class: center, middle
+
+# Source code
+
+[GitHub repository](https://github.com/wieczorek1990/cbots)
+
+[Online presentation](http://wieczorek1990.github.io/cbots/presentation)
+
 ---
 
 background-image: url(images/cat.png)
 class: center, bottom
 
 # Thanks
-
 ### Questions please
