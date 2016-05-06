@@ -14,7 +14,7 @@ class: center, middle
 5. api.ai
 6. Microsoft Bot Framework
 7. Other solutions
-8. What can I possibly write with this?
+8. What topics can I possibly touch with this?
 9. Summary
 
 ---
@@ -23,19 +23,23 @@ class: center, middle
 
 Old times:
 * [Cleverbot](http://www.cleverbot.com/)
+* [Akinator](http://akinator.com/)
 * [List of Chat Bots](http://ai.wikia.com/wiki/List_Of_Chat_Bots)
 
 New times:
 * [2016 will be the year of conversational commerce @ medium.com](https://medium.com/chris-messina/2016-will-be-the-year-of-conversational-commerce-1586e85e3991)
 * [Microsoft's Tay is an Example of Bad Design @ medium.com](https://medium.com/@carolinesinders/microsoft-s-tay-is-an-example-of-bad-design-d4e65bb2569f)
+* [wit.ai](https://wit.ai/)
+* [api.ai](https://api.ai/)
+* [Microsoft Bot Framework](https://dev.botframework.com/)
 
 ---
 
-# [Facebook Messenger Platform](https://developers.facebook.com/docs/messenger-platform)
+# Facebook Messenger Platform
 
-* Facebook Page (Send message) & Application (Messenger, Webhooks)
+* Facebook Page (send message) & Application (Messenger, webhooks)
 
-* `express` — Hooks for Messenger API
+* `express` — hooks for Messenger API
 
   `GET /webhook` — challene-response authentication
 
@@ -44,9 +48,9 @@ New times:
     * send the message to the bot API
     * return the formatted bot API response to sender
 
-* `request` — Post request to Messenger API
+* `request` — post request to Messenger API
 
-```
+```js
 {
   "recipient": "...",
   "message": {...}
@@ -74,7 +78,17 @@ Functionality:
 
 ---
 
-# [wit.ai](https://wit.ai/)
+class: center
+
+# Works like this, meow!
+
+![](images/facebook-1.png)
+![](images/facebook-2.png)
+![](images/facebook-3.png)
+
+---
+
+# wit.ai
 
 Why?
 * Mentioned on Facebook developer pages
@@ -85,8 +99,8 @@ Why?
 How?
 * Inbox — new expressions to analyse
 * Stories — requests with responses, context, entities, actions, variables
-* Actions — custom (conditional) actions (developer implementation) and responses
-* Understanding — entities values and search strategies
+* Actions — actions in code
+* Understanding — entity values and search strategies
 * Logs — message, context, actions
 
 ---
@@ -154,7 +168,6 @@ class: center
 
 ---
 
-
 background-image: url(images/wit-logs.png)
 class: center
 
@@ -164,7 +177,7 @@ class: center
 
 # Server custom code (1)
 
-```
+```js
 
 var CAT_COUNTER = 0;
 
@@ -287,7 +300,7 @@ class: center
 
 # Custom server code (1)
 
-```
+```js
 let CAT_COUNTER = 0;
 const actions = {
   counter() {
@@ -297,7 +310,7 @@ const actions = {
 }
 ```
 
-```
+```js
 function processEvent(event) {
   ...
         let action = response.result.action;
@@ -313,7 +326,7 @@ function processEvent(event) {
 
 # Custom server code (2)
 
-```
+```js
 let isImage = response.result.parameters.isImage === 'true';
 if (!isImage) {
   // facebook API limit for text length is 320,
@@ -342,26 +355,152 @@ if (!isImage) {
 
 # [Microsoft Bot Framework](https://dev.botframework.com/)
 
+What?
+* Paired with [LUIS](https://www.luis.ai)
+* More than 30 languages (5 in LUIS)
+* Good documentation [here](http://docs.botframework.com/sdkreference/nodejs/modules/_botbuilder_d_.html) and [here](https://www.luis.ai/Help)
+
+How?
+* Bot connector — integrations
+* Bot Builder SDK — JavaScript/C# tools
+* Bot Directory (soon) — bot marketplace
+* Separation of language understanding engine and responses
+* Reviews, waiting, Microsoft please don't stay in touch
+
 ---
 
-# What can I possibly write with this?
+background-image: url(images/microsoft-botframework.png)
+class: center
 
-* Cat bot? :-)
-* Booking bot (tickets, pizza delivery, reservation, etc.)
-* Company information bot ("What would you like to know about Apptension?")
-* Joke bot
-* Comfort bot
-* Help desk bot
-* Weather bot
-* Monitoring bot
+# Botframework
+
+---
+
+background-image: url(images/microsoft-entities.png)
+class: center
+
+# Entities
+
+---
+
+background-image: url(images/microsoft-intents-1.png)
+class: center
+
+# Intents(1)
+
+---
+
+background-image: url(images/microsoft-intents-2.png)
+class: center
+
+# Intents (2)
+
+---
+
+background-image: url(images/microsoft-utterances.png)
+class: center
+
+# Utterances
+
+---
+
+background-image: url(images/microsoft-suggest.png)
+class: center
+
+# Suggest
+
+---
+
+# Server custom code (1)
+
+```js
+if (DEBUG) {
+  bot = new builder.TextBot();
+} else {
+  bot = new builder.BotConnectorBot({
+    appId: config.appId,
+    appSecret: config.appSecret
+  });
+}
+
+bot.add('/', dialog);
+
+if (DEBUG) {
+  bot.listenStdin();
+} else {
+  var server = restify.createServer();
+  server.post('/api/messages', bot.verifyBotFramework(), bot.listen());
+  server.listen(process.env.port || 8445, function() {
+    console.log('%s listening to %s', server.name, server.url);
+  });
+}
+```
+
+---
+
+# Server custom code (2)
+
+```js
+function composeMessage(text, session) {
+  return new builder.Message().setText(session, text).addAttachment({
+    contentType: 'image/*', contentUrl: text
+  });
+}
+var dialog = new builder.LuisDialog(config.luis);
+dialog.on('Meow', builder.DialogAction.send(strings.Meow));
+dialog.on('Categories', builder.DialogAction.send(strings.Categories));
+dialog.on('Cat', function(session, args) {
+  session.send(composeMessage(strings.Cat, session));
+});
+dialog.on('Category', function(session, args) {
+  var entity = builder.EntityRecognizer.findEntity(args.entities, 'category')
+  if (entity) {
+    var category = entity['entity'];
+    var text = strings.Category + category;
+    var message = composeMessage(text, session);
+    session.send(message);
+  } else {
+    session.send('Could not find such category.');
+  }
+});
+```
+
+---
+
+# What topics can I possibly touch with this?
+
+* Booking
+* Company information
+* Jokes
+* Comforting
+* Help desk
+* Weather
+* Monitoring
+* Learning
+* etc.
 
 ---
 
 # Summary
 
-* Different from "free" bots
-* Similar & immature solutions
-* "Story" driven
+* wit.ai
+  * free
+  * clean user interface
+  * good context handling
+  * entity class choice
+  * text only parameters
+* api.ai
+  * lists for intent requests and responses
+  * entity synonyms
+  * knowledge domains
+  * speech recognition and playback
+  * active support
+  * text only parameters
+* Microsoft
+  * ugly user interface
+  * orienatation for code
+  * manual utterance training
+  * entity can contain maximum 10 values
 
 ---
 
@@ -370,10 +509,11 @@ if (!isImage) {
 * [Pandorabots](http://www.pandorabots.com/)
 * [Pingup](http://pingup.com/developers/)
 * [OneBotAPI](http://www.onebotapi.com/)
-
+* and others not high in Google Search
 ---
 
-class: center, middle
+background-image: url(images/cat.png)
+class: center, bottom
 
 # Thanks
 

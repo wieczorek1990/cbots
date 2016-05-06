@@ -1,0 +1,6 @@
+{
+  "Meow": "Meow, meow!",
+  "Categories": "Categories are: hats, space, funny, sunglasses, boxes, caturday, ties, dream, kittens, sinks, clothes.",
+  "Cat": "http://thecatapi.com/api/images/get",
+  "Category": "http://thecatapi.com/api/images/get?category="
+}

@@ -1,0 +1,6 @@
+{
+  "appId": "...",
+  "appSecret": "...",
+  "luis": "...",
+  "debug": true
+}
